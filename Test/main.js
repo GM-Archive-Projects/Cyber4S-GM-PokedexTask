@@ -1,16 +1,19 @@
 // defaults
 axios.defaults.baseURL = "http://pokeapi.co/api/v2/pokemon/";
-axios.defaults.validateStatus = status => status >= 200 && status < 300;
+axios.defaults.validateStatus = (status) => status >= 200 && status < 300;
 
 function getPokemon(pokemonId) {
-  axios.get(`/${pokemonId}`).then(function(response){
-    console.log(response.data);
+  axios
+    .get(`/${pokemonId}`)
+    .then(function (response) {
+      console.log(response.data);
     })
-    .catch(function(error){
+    .catch(function (error) {
       console.log(error.response.data);
       console.log(error.response.status);
-    })}
-    getPokemon(999)
+    });
+}
+getPokemon(999);
 
 /* 
 function getResource(resource) {

@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokedex</title>
-</head>
-<body>
-  <input id="search" /><button id="searchButon" onclick="searchValidation()">Search</button>
-  <button id="addPokemon" onclick="addPokemon()">Add To Deck</button>
-  <div id="error" style="display: none;"></div>
-
-
-  <div id="searchResults">
-    <div id="pokemonDetails">
-      <p class="pokemonName"></p>
-      <p class="pokemonId"></p>
-      <p class="pokemonHeight"></p>
-      <p class="pokemonWeight"></p>
-      <p class="pokemonImage"></p>
+  </head>
+  <body id="body">
+    <div id="controlPanel">
+      <input id="search" /><button id="searchButon" onclick="searchPokemon()">
+        Search
+      </button>
+      <button id="addPokemon" onclick="addPokemon()">Add To Deck</button>
+      <div id="error" style="display: none;">
+        <h2 id="errorHeading"></h2>
+        <br>
+      </div>
     </div>
-  </div>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- todo later: use a local copy installed via npm -->
-  <script src="./main.js"></script>  <!-- todo: change to type:module -->
-</body>
+
+    <div id="searchResults">
+      <div id="pokemonDetails">
+        <p class="pokemonName"></p>
+        <p class="pokemonId"></p>
+        <p class="pokemonHeight"></p>
+        <p class="pokemonWeight"></p>
+        <p class="pokemonImage"></p>
+      </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- todo later: use a local copy installed via npm -->
+    <script src="./main.js"></script>
+    <!-- todo: change to type:module -->
+  </body>
 </html>
