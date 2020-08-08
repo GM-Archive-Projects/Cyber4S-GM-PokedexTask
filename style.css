@@ -1,4 +1,10 @@
-#error {
-    transition: all .6s;
+body {
+    background-image: url("images/pokemons.jpg");
 }
-
+#pokedex {
+    text-align: center;
+    margin: 0 450px;
+    background: antiquewhite;
+    border-radius: 30px;
+    border: 1px solid grey;
+}

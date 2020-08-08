@@ -4,7 +4,8 @@
   "description": "Before:\r * Create new private repo in your github account\r * (OPTIONAL) use index.html/main.js as an examples (don't clone this repo)\r * Try to commit any time you done with a task",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon main.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,9 @@
   },
   "homepage": "https://github.com/MrMoshkovitz/PokedexTask#readme",
   "dependencies": {
-    "axios": "^0.19.2"
-  }
+    "axios": "^0.19.2",
+    "fetch": "^1.1.0",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {}
 }
