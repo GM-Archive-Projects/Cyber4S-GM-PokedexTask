@@ -5,9 +5,11 @@ const mainHeader = document.getElementById("mainHeader");
 const controlPanel = document.getElementById("controlPanel");
 const search = document.getElementById("search");
 const searchButton = document.getElementById("searchButton");
-const pokemosListButton = document.getElementById("pokemosListButton");
+const pokemonsListButton = document.getElementById("pokemonsListButton");
 const searchResults = document.getElementById("searchResults");
-const poke_container = document.getElementById('poke_container');
+const poke_container = document.getElementById("poke_container");
+const errorElement = document.getElementById("error")
+const pokesListElem = document.getElementById("pokeList")
 
 
 axios.defaults.baseURL = "http://pokeapi.co/api/v2/";
@@ -40,6 +42,7 @@ const searchPokemon = async (pokemonIdentifier) => {
     console.log("Pokemon Data");
     console.log(data);
     console.log(`${data.name} ID ${data.id}`);
+    
     const pokemon = {
       id: data.id,
       name: data.name,
@@ -47,13 +50,22 @@ const searchPokemon = async (pokemonIdentifier) => {
       height: data.height,
       backIMG: data.sprites.back_female
         ? data.sprites.back_female
-        : data.sprites.back_default,
-      frontIMG: data.sprites.front_female
-        ? data.sprites.front_female
-        : data.sprites.front_default,
+        : (
+            data.sprites.back_default
+            ? data.sprites.back_default
+            : "images/pokeball.png"
+        ),
+      frontIMG: data.sprites.front_female 
+      ? data.sprites.front_female
+      : (
+          data.sprites.front_default 
+        ? data.sprites.front_default
+        : "images/pokeball.png"
+        ),
       types: data.types.map((type) => type.type.name),
     };
     console.log(pokemon);
+
     return pokemon;
   } catch (error) {
     console.log("Error Row");
@@ -64,36 +76,30 @@ const searchPokemon = async (pokemonIdentifier) => {
 };
 
 function displayError(errorData) {
+    errorElement.innerHTML = ""
   alert(`Please Check if { ${search.value} } is a Valid ID Or Name`);
-  const errorElement = document.createElement("div");
-  errorElement.classList.add("error");
-  errorElement.setAttribute("id", "error")
-
-
-
-  errorHTML =  `
-    <div id="error"> 
+  errorElement.innerHTML ="";
+  errorHTML = `
         <h2 id="errorHeading"> Error Pokemon: { ${search.value} } Not Found</h2>
         <span id="errorText">
-        Failed Sending: ${errorData.config.method.toUpperCase()} Request To ${errorData.request.responseURL} 
+        Failed Sending: ${errorData.config.method.toUpperCase()} Request To ${
+    errorData.request.responseURL
+  } 
         Error Data: ${(errorData.status, errorData.data)};
         <span>
-    </div>
     `;
-    errorElement.innerHTML = errorHTML;
-
-
-  searchResults.appendChild(errorElement);
-
+  errorElement.innerHTML = errorHTML;
+  errorElement.style.display = "block";
 }
 
 const addPokemonCard = async (pokemonIdentifier) => {
-    const poke_container = document.createElement("div");
-    poke_container.setAttribute("id", "poke_container")
-    poke_container.classList.add("poke-container")
-    searchResults.appendChild(poke_container);
-  const pokemonEl = document.createElement("div");
+    errorElement.style.display = "none";
+    let poke_container = document.createElement("div")
+    poke_container.classList.add("poke-container");
+    console.log(poke_container)
   
+  pokesListElem.appendChild(poke_container);
+  const pokemonEl = document.createElement("div");
 
   pokemonEl.classList.add("pokemon");
 
@@ -103,43 +109,88 @@ const addPokemonCard = async (pokemonIdentifier) => {
   const type = main_types.find((type) => poke_types.indexOf(type) > -1);
   const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
   const color = colors[type];
-
   
-  pokemonEl.style.backgroundColor = color;
 
-  const pokemonHTMLString = ` 
+  pokemonEl.style.backgroundColor = color;
+  let pokeTypeList = `<h5>Pokemon Types</h5><ul id="pokeTypes">`
+  poke_types.forEach(type => {
+      pokeTypeList += `
+      <li class="pokeType${poke_types.indexOf(type) + 1}">${type}</li>
+      `
+  })
+  pokeTypeList += "</ul>"
+
+  var pokemonHTMLString = ` 
     <div class="img-container">
     <img src="${pokemon.frontIMG}" />
     </div>
     <div class="info">
     <span class="number">#${pokemon.id.toString().padStart(3, "0")}</span>
     <h3 class="name">${name}</h3>
-    <small class="type">Type: <span>${type}</span></small>
-</div>
-`;
+    ${pokeTypeList}
+    </div>
+    `;
+    pokemonEl.innerHTML = pokemonHTMLString;
+    poke_container.appendChild(pokemonEl);
 
-  // <li class="card" style="backgroundcolor: ${colors(pokemon.type)}>
-  //         <img class="card-image" src="${pokemon.frontIMG}"/>
-  //         <h3 class="card-title">${pokemon.id}. ${pokemon.name}</h3>
-  //         <p class="card-subtitle">Weight: ${pokemon.weight} <br> Height: ${pokemon.height} <br> Type: ${pokemon.type}
-  //         </p>
-  //     </li>
-  //     `
+  const imgElement = poke_container.querySelector("img");
+  imgElement.addEventListener(
+    "mouseover",
+    () => (imgElement.src = `${pokemon.backIMG}`)
+  );
+  imgElement.addEventListener(
+    "mouseleave",
+    () => (imgElement.src = `${pokemon.frontIMG}`)
+  );
+  
+  
+  pokesListElem.appendChild(poke_container)
+  console.log("append")
+      
+  let typeArray = pokemon.types;
+  console.log("TYPES", typeArray)
+  
+  typeArray.forEach(type => {
 
+      const li = pokemonEl.getElementsByClassName(`pokeType${poke_types.indexOf(type) + 1}`)
+      li[0].onclick = () => pokeList(event.target.innerHTML);
+    })
+}
 
-  pokemonEl.innerHTML = pokemonHTMLString;
-  poke_container.appendChild(pokemonEl);
-  // searchResults.appendChild(poke_container)
-};
 // Event Listeners
 
+  
+  const pokeList = async (typeName )=>{
+    
+    console.log(typeName);
+    const { data } = await axios.get(`http://pokeapi.co/api/v2/type/${typeName}`);
+    const dataArray = data.pokemon.map(pokemonObject => pokemonObject.pokemon.name);
+    const listPoks = pokesListElem.childNodes;
+    for (let i = listPoks.length -1; i >= 0; i--) {
+        console.log(listPoks[i])
+        pokesListElem.removeChild(listPoks[i]);
+    }
+
+    dataArray.forEach(pok => {
+        addPokemonCard(pok)
+    })
+    // pokesListElem.replaceChild()   
+    search.value = typeName;
+    // searchResults.innerHTML = `<ul>${pokemonsList.innerHTML}</ul>`;
+  }
+
+
 searchButton.onclick = () => {
-  searchResults.innerHTML = "";
+    let poke_container = document.getElementsByClassName("poke-container")
+    if (searchResults.firstElementChild.firstElementChild != null) {
+        console.log(searchResults.firstElementChild)
+        searchResults.removeChild(pokesListElem.firstElementChild)
+        console.log("removed")
+    }
   if (search.value === "") {
     return alert("You Must Insert Either Pokemon Name or Pokemon ID !");
   }
   addPokemonCard(search.value);
 };
 
-// cardIMG = searchResults.querySelector("card-image");
-// cardIMG.addEventListener("mouseover", () => {cardIMG.src=`${pokemon.backIMG}`})
+

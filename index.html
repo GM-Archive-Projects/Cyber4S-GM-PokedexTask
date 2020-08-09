@@ -20,20 +20,18 @@
           <!--The Control Panel is where the user Control The Pokemons-->
           <input id ="search" placeholder="Pokemon Identifier" />
             <button id ="searchButton" class="btn">Search </button>
-            <input type="button" value='Pokemons List' class="btn">
+            <input type="button" value='Pokemons List' id="pokemonsListButton" class="btn">
+
+        </div>
+                <div id="searchResults">
+                    <div id="pokeList">
+                    </div>
+                    <div id="error"></div>
+        
+                </div>
         </div>
 
-        <div id="searchResults">
-            <div id="poke_container" class="poke-container"></div>
-        </div>
-        <div id="pokemonstypes">
-            <ul id = "pokemonsList">
-
-            </ul>
-        </div>
-
-
-    </div>
+        
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!-- <script type = "text/javascript" src="../node_modules/axios/dist/axios.min.js"></script> -->
     <script type ="text/javascript" src="main.js"></script>
