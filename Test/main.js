@@ -1,41 +1,74 @@
-// defaults
-axios.defaults.baseURL = "http://pokeapi.co/api/v2/pokemon/";
-axios.defaults.validateStatus = (status) => status >= 200 && status < 300;
+const poke_container = document.getElementById('poke_container');
+const pokemons_number = 150;
 
-function getPokemon(pokemonId) {
-  axios
-    .get(`/${pokemonId}`)
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-    });
+const colors = {
+	fire: '#FDDFDF',
+	grass: '#DEFDE0',
+	electric: '#FCF7DE',
+	water: '#DEF3FD',
+	ground: '#f4e7da',
+	rock: '#d5d5d4',
+	fairy: '#fceaff',
+	poison: '#98d7a5',
+	bug: '#f8d5a3',
+	dragon: '#97b3e6',
+	psychic: '#eaeda1',
+	flying: '#F5F5F5',
+	fighting: '#E6E0D4',
+	normal: '#F5F5F5'
+};
+const main_types = Object.keys(colors);
+
+
+const getPokemon = async id => {
+	const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+	const res = await fetch(url);
+	const pokemon = await res.json();
+	createPokemonCard(pokemon);
+};
+
+function createPokemonCard(pokemon) {
+	const pokemonEl = document.createElement('div');
+	pokemonEl.classList.add('pokemon');
+
+	const poke_types = pokemon.types.map(type => type.type.name);
+	const type = main_types.find(type => poke_types.indexOf(type) > -1);
+	const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+	const color = colors[type];
+	
+	pokemonEl.style.backgroundColor = color;
+
+	const pokeInnerHTML = `
+        <div class="img-container">
+            <img src="https://pokeres.bastionbot.org/images/pokemon/${
+							pokemon.id
+						}.png" alt="${name}" />
+        </div>
+        <div class="info">
+            <span class="number">#${pokemon.id
+							.toString()
+							.padStart(3, '0')}</span>
+            <h3 class="name">${name}</h3>
+            <small class="type">Type: <span>${type}</span></small>
+        </div>
+    `;
+
+	pokemonEl.innerHTML = pokeInnerHTML;
+
+	poke_container.appendChild(pokemonEl);
 }
-getPokemon(999);
 
-/* 
-function getResource(resource) {
-    return axios.get("/" + resource).then(r => r.data);
+
+
+
+
+searchButton.onclick = () => {
+    searchResults.innerHTML = "";
+    if (search.value === ""){
+        return alert("You Must Insert Either Pokemon Name or Pokemon ID !");
+    }
+    getPokemon(search.value);
 }
 
-function postResource(resource, resourceData) {
-    return axios.post("/" + resource, resourceData).then(r => r.data);
-}
 
-(async function main() {
-  const resources = await getResources();
-  console.log(resources);
-  
-  if (resources.length > 0) {
-    const resource = await getResource(resources[0]);
-    console.log(resource);
-  }
 
-  const testResource = { x: 5, y: 7 };
-  const response = await postResource("test", testResource);
-  console.log(response);
-})();
- 
- */
