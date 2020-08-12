@@ -151,3 +151,24 @@ typeArray.forEach(type => {
     li[0].onclick = () => pokeList(event.target.innerHTML);
   })
 }
+
+
+// Pokemon List Function To Get All Pokemons List from This Type
+const pokeList = async (typeName )=>{
+    
+  console.log(typeName);
+  const { data } = await axios.get(`http://pokeapi.co/api/v2/type/${typeName}`);
+  const dataArray = data.pokemon.map(pokemonObject => pokemonObject.pokemon.name);
+  const listPoks = pokesListElem.childNodes;
+  for (let i = listPoks.length -1; i >= 0; i--) {
+      console.log(listPoks[i])
+      pokesListElem.removeChild(listPoks[i]);
+  }
+
+  dataArray.forEach(pok => {
+      addPokemonCard(pok)
+  })
+  // pokesListElem.replaceChild()   
+  search.value = typeName;
+  // searchResults.innerHTML = `<ul>${pokemonsList.innerHTML}</ul>`;
+}
