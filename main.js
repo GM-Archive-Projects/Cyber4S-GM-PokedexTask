@@ -168,7 +168,20 @@ const pokeList = async (typeName )=>{
   dataArray.forEach(pok => {
       addPokemonCard(pok)
   })
-  // pokesListElem.replaceChild()   
   search.value = typeName;
-  // searchResults.innerHTML = `<ul>${pokemonsList.innerHTML}</ul>`;
 }
+
+// 
+searchButton.onclick = () => {
+  if (searchResults.firstElementChild.firstElementChild != null) {
+      console.log(searchResults.firstElementChild)
+      searchResults.removeChild(pokesListElem.firstElementChild)
+      console.log("removed")
+  }
+if (search.value === "") {
+  return alert("You Must Insert Either Pokemon Name or Pokemon ID !");
+}
+addPokemonCard(search.value);
+};
+
+
