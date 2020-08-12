@@ -1,7 +1,5 @@
 # Pokedex
 
-
-# CSS And Frontend Needs to be edited
 Before:
 * Create new private repo in your github account
 * (OPTIONAL) use index.html/main.js as an examples (don't clone this repo)

@@ -1,15 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokedex</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap"
+    rel="stylesheet" /> -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokeded App</title>
 </head>
 <body>
-  <input id="search" /><button id="searchButon">Search</button>
-  <div id="results">
-  </div>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- todo later: use a local copy installed via npm -->
-  <script src="./main.js"></script>  <!-- todo: change to type:module -->
+    <!-- This is The Main App Div which includes all of the App HTML-->
+    <div id="pokedex">
+        <header>
+            <h1 id= "mainHeader">Pokedex App</h1>
+        </header>
+        
+        <div id = "controlPanel">
+          <!--The Control Panel is where the user Control The Pokemons-->
+          <input id ="search" placeholder="Pokemon Identifier" />
+            <button id ="searchButton" class="btn">Search </button>
+            
+        </div>
+                <div id="searchResults">
+                    <div id="pokeList">
+                    </div>
+                    <div id="error"></div>
+        
+                </div>
+        </div>
+
+        
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script type = "text/javascript" src="../node_modules/axios/dist/axios.min.js"></script> -->
+    <script type ="text/javascript" src="main.js"></script>
 </body>
+
 </html>
