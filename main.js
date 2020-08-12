@@ -36,8 +36,7 @@ const searchPokemon = async (pokemonIdentifier) => {
 
   try {
     const { data } = await axios.get(`pokemon/${pokemonIdentifier}`);
-    console.log("Pokemon Data");
-    console.log(data);
+    console.log("Pokemon Data", data);
     console.log(`${data.name} ID ${data.id}`);
 
     // Pokemon  Object Constructing
@@ -58,7 +57,7 @@ const searchPokemon = async (pokemonIdentifier) => {
         : "images/pokeball.png",
       types: data.types.map((type) => type.type.name),
     };
-    console.log("Pokemon", pokemon);
+    console.log("Pokemon Object Created: ", pokemon);
 
     return pokemon;
   } catch (error) {
@@ -84,4 +83,71 @@ errorHTML = `
   `;
 errorElement.innerHTML = errorHTML;
 errorElement.style.display = "block";
+}
+
+
+// Add Pokemon Function To Add The Pokemon To The HTML
+
+const addPokemonCard = async (pokemonIdentifier) => {
+  errorElement.style.display = "none";
+  let poke_container = document.createElement("div")
+  poke_container.classList.add("poke-container");
+
+pokesListElem.appendChild(poke_container);
+const pokemonEl = document.createElement("div");
+
+pokemonEl.classList.add("pokemon");
+
+const pokemon = await searchPokemon(pokemonIdentifier);
+
+const poke_types = pokemon.types;
+const type = main_types.find((type) => poke_types.indexOf(type) > -1);
+const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+const color = colors[type];
+
+
+pokemonEl.style.backgroundColor = color;
+let pokeTypeList = `<h5>Pokemon Types</h5><ul id="pokeTypes">`
+poke_types.forEach(type => {
+    pokeTypeList += `
+    <li class="pokeType${poke_types.indexOf(type) + 1}">${type}</li>
+    `
+})
+pokeTypeList += "</ul>"
+
+var pokemonHTMLString = ` 
+  <div class="img-container">
+  <img src="${pokemon.frontIMG}" />
+  </div>
+  <div class="info">
+  <span class="number">#${pokemon.id.toString().padStart(3, "0")}</span>
+  <h3 class="name">${name}</h3>
+  ${pokeTypeList}
+  </div>
+  `;
+  pokemonEl.innerHTML = pokemonHTMLString;
+  poke_container.appendChild(pokemonEl);
+
+const imgElement = poke_container.querySelector("img");
+imgElement.addEventListener(
+  "mouseover",
+  () => (imgElement.src = `${pokemon.backIMG}`)
+);
+imgElement.addEventListener(
+  "mouseleave",
+  () => (imgElement.src = `${pokemon.frontIMG}`)
+);
+
+
+pokesListElem.appendChild(poke_container)
+console.log("Pokemon Appended")
+    
+let typeArray = pokemon.types;
+console.log("Pokemon TYPES", typeArray)
+
+typeArray.forEach(type => {
+
+    const li = pokemonEl.getElementsByClassName(`pokeType${poke_types.indexOf(type) + 1}`)
+    li[0].onclick = () => pokeList(event.target.innerHTML);
+  })
 }
