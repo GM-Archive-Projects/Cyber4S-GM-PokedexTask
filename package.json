@@ -21,6 +21,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "fetch": "^1.1.0",
+    "jsdom-quokka-plugin": "^1.0.16",
     "nodemon": "^2.0.4"
   },
   "devDependencies": {}
