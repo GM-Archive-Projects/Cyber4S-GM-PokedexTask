@@ -36,9 +36,8 @@ body {
 
 .poke-container {
 	display: flex;
-	margin: 10px;
-	padding: 10px;
-	/* max-width: 1px; */
+	margin: 5px 5px;
+	max-width: 1200px;
 }
 
 
