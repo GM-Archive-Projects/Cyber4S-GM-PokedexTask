@@ -25,7 +25,7 @@ body {
     margin-bottom: 30px;
 }
 
-.pokeList {
+#pokeList {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: space-between;
