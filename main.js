@@ -7,7 +7,7 @@ const errorElement = document.getElementById("error");
 const pokesListElem = document.getElementById("pokeList");
 
 //Defining Axios Defaults
-import axios from "axios";
+// import axios from "axios";
 axios.defaults.baseURL = "http://pokeapi.co/api/v2/";
 axios.defaults.validateStatus = (status) => status >= 200 && status < 300;
 
